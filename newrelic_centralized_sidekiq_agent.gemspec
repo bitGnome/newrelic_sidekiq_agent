@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = ["brett.piatt@gmail.com"]
   s.homepage    = "https://github.com/bitGnome/newrelic_centralized_sidekiq_agent"
   s.summary     = "Sidekiq plug-in for NewRelic monitoring."
-  s.description = "Sidekiq plug-in for NewRelic monitoring."
+  s.description = "Sidekiq plug-in for NewRelic monitoring. This gem can be configured to monitor mulitiple sidekiq insatances."
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 

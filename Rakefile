@@ -1,10 +1,14 @@
+require 'rubygems'
+require 'rake'
+require 'date'
+require 'rdoc/task'
+
 begin
   require 'bundler/setup'
 rescue LoadError
   puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
 end
 
-require 'rdoc/task'
 
 RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
@@ -15,6 +19,41 @@ RDoc::Task.new(:rdoc) do |rdoc|
 end
 
 Bundler::GemHelper.install_tasks
+
+#############################################################################
+#
+# Helper functions
+#
+#############################################################################
+
+def name
+  @name ||= Dir['*.gemspec'].first.split('.').first
+end
+
+def version
+  line = File.read("lib/#{name}.rb")[/^\s*VERSION\s*=\s*.*/]
+  line.match(/.*VERSION\s*=\s*['"](.*)['"]/)[1]
+end
+
+def date
+  Date.today.to_s
+end
+
+def rubyforge_project
+  name
+end
+
+def gemspec_file
+  "#{name}.gemspec"
+end
+
+def gem_file
+  "#{name}-#{version}.gem"
+end
+
+def replace_header(head, header_name)
+  head.sub!(/(\.#{header_name}\s*= ').*'/) { "#{$1}#{send(header_name)}'"}
+end
 
 #############################################################################
 #
@@ -55,19 +94,6 @@ task :gemspec => :validate do
   #comment this out if your rubyforge_project has a different name
   #replace_header(head, :rubyforge_project)
 
-  # determine file list from git ls-files
-  files = `git ls-files`.
-      split("\n").
-      sort.
-      reject { |file| file =~ /^\./ }.
-      reject { |file| file =~ /^(rdoc|pkg)/ }.
-      map { |file| "    #{file}" }.
-      join("\n")
-
-  # piece file back together and write
-  manifest = "  s.files = %w[\n#{files}\n  ]\n"
-  spec = [head, manifest, tail].join("  # = MANIFEST =\n")
-  File.open(gemspec_file, 'w') { |io| io.write(spec) }
   puts "Updated #{gemspec_file}"
 end
 

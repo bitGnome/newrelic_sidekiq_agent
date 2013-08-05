@@ -22,5 +22,8 @@ newrelic:
 agents:
   sidekiq:
     -
-      host: hostname.com:6379
+      host: hostname_1.com:6379
+      namespace: sidekiq_namespace
+    -
+      host: hostname_2.com:6379
       namespace: sidekiq_namespace
