@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    newrelic_sidekiq_agent (0.0.1)
+    newrelic_centralized_sidekiq_agent (0.0.1)
       rails (~> 4.0.0)
 
 GEM
@@ -84,5 +84,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  newrelic_sidekiq_agent!
+  newrelic_centralized_sidekiq_agent!
   sqlite3
